@@ -1,0 +1,35 @@
+#!/bin/bash
+# (C) Copyright IBM Corp. 2017
+# 
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+# 
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+# THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+sample=Solexa-272221
+sample_ext=.hg38.md.bam
+
+input_dir=./data
+gatk_dir=.
+ref_dir=.
+reference=${ref_dir}/Homo_sapiens_assembly38.fasta 
+snp_vcf=${ref_dir}/1000G_phase1.snps.high_confidence.hg38.vcf
+
+export JAVA_TOOL_OPTIONS="-Xmn18g -Xms21g -Xmx21g -XX:ParallelGCThreads=16 -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+AggressiveOpts -Djava.library.path=."
+./affinity.sh ${input_dir}/${sample}.recal_reads .table.log-4 >& affinity.BR.log &
+
+ts=$!
+make reference=${reference} snp_vcf=${snp_vcf} gatk_dir=${gatk_dir} ref_dir=${ref_dir} input_dir=${input_dir} sample=${sample} sample_ext=${sample_ext} -j18 -f runBR.mk
+kill ${ts}
