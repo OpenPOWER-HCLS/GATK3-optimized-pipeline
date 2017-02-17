@@ -5,10 +5,10 @@
 + GATK 3
 
 ## Change input files
-Please edit the first two lines of the run scripts (run23.SSMD, run5.BR, run6.PR and run7.HC)
+Please edit the first two lines of the run scripts
 
 ## Change the directories of GATK and reference files
-Please edit gatk_dir and ref_dir of the run scripts (run23.SSMD, run5.BR, run6.PR and run7.HC)
+Please edit gatk_dir and ref_dir of the run scripts
 
 ## How to run
 1. run1.BWA
