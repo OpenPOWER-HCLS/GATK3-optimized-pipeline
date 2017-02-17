@@ -21,8 +21,9 @@
 sample=Solexa-272221
 sample_ext=.fq
 input_dir=./data
-reference=./Homo_sapiens_assembly38.fasta
+ref_dir=.
 
+reference=${ref_dir}/Homo_sapiens_assembly38.fasta
 input1=${input_dir}/${sample}.1${sample_ext}
 input2=${input_dir}/${sample}.2${sample_ext}
 output=${input_dir}/${sample}.hg38.bwa.sam
