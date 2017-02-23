@@ -21,7 +21,7 @@
 
 indir=data
 sample=Solexa-272221
-output=data/${sample}.raw_variants.vcf
+output=${sample}.raw_variants.vcf
 
 cp -ip ${indir}/${sample}.raw_variants1.vcf ${output}
 header=$(( 1 + `grep '^#' ${indir}/${sample}.raw_variantsY.vcf|wc -c` ))
