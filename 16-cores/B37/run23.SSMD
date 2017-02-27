@@ -26,4 +26,17 @@ input=${input_dir}/${sample}${sample_ext}
 output=${input_dir}/${sample}.md.bam
 sam2bam_dir=./sam2bam/build/samtools
 
-${sam2bam_dir}/samtools sam2bam -Fibm_markdup:r -o${output} ${input}
+# The default mode of sam2bam is memory mode for the best performance. 
+# Recommend main memory size for WGS is 1 TB.
+# If the machine has 250-1000 GB with high-performance storage (e.g., NVMe), 
+# sam2bam can process WGS in the storage mode, depending on the number of alignments. 
+# To use the storage mode, change use_storage_mode from no to yes and also change
+# "path" to a directory on the high-performance storage. 
+use_storage_mode=no
+bam_pagefile=/path/pf
+
+case "${use_storage_mode}" in
+  "no" ) ${sam2bam_dir}/samtools sam2bam -Fibm_markdup:r -o${output} ${input} ;;
+  "yes" ) export BAM_PAGEFILE=${bam_pagefile}
+	${sam2bam_dir}/samtools sam2bam -d -p -Fibm_markdup:r -o${output} ${input} ;;
+esac
